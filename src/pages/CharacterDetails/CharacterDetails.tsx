@@ -1,11 +1,14 @@
-import { useParams } from "react-router-dom";
+import {useEffect} from 'react';
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Loader } from "../../components/Loader";
 import { Films } from "./Films";
 import { Starships } from "./Starships";
-import { useSwapi } from "../../hooks/useSwapi";
 import { Planet } from "../../components/Planet/Planet";
-import { BASE_URL } from "../../constants/constants";
+import { useSelector, useDispatch } from "react-redux";
+import { selectedCharacterByUID } from "../../store/selectors";
+import { saveFavourites } from "../../store/starwarsSlice";
+import type { StarWars } from "../../store/starwarsSlice";
 
 type Character = {
   name: string;
@@ -17,9 +20,10 @@ type Character = {
   eye_color: string;
 };
 
-export const CharacterDetails = () => {
+const CharacterDetails = () => {
   const { id } = useParams();
-  const { data, isLoading } = useSwapi( `${BASE_URL}/people/${id}`);
+  const dispatch = useDispatch();
+  const navigate= useNavigate();
 
   // If id is not provided, return an error message
   // This can happen if the URL is malformed or the character ID is missing
@@ -27,18 +31,16 @@ export const CharacterDetails = () => {
     return <p className="p-4">Character ID not found</p>;
   }
 
+  const data = useSelector((state: StarWars) =>
+    selectedCharacterByUID(state, id)
+  );
+
   const addToFavourites = () => {
-    const favs = JSON.parse(localStorage.getItem("favourites") || "[]");
-    if (!favs.some((f: Character) => f.name === data.name)) {
-      localStorage.setItem(
-        "favourites",
-        JSON.stringify([...favs, data])
-      );
-      alert("Added to favourites");
-    }
+    dispatch(saveFavourites(data));
+    navigate('/favourites');
   };
 
-  if (isLoading && !data) return <Loader />;
+  if (!data) return <Loader />;
 
   return (
     <CharacterDetailsWrapper>
@@ -59,23 +61,24 @@ export const CharacterDetails = () => {
         <Planet apiUrl={data?.homeworld} />
       </StyledCharacter>
       <StyledFilmsStarships>
-        <Films filmUrls={data?.films}/>
-        <Starships urls={data?.starships}/>
+        <Films filmUrls={data?.films} />
+        <Starships urls={data?.starships} />
       </StyledFilmsStarships>
     </CharacterDetailsWrapper>
   );
 };
+
+export default CharacterDetails;
 
 const CharacterDetailsWrapper = styled.div`
   padding: 40px;
   max-width: 800px;
   width: 600px;
   margin: 0 auto;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.41);
+  border-radius: 10px;
   font-family: Arial, sans-serif;
-  color: #333;
+  color: white;
   line-height: 1.6;
 `;
 

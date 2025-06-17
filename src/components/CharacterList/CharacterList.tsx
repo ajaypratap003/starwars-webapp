@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useSwapi } from "../../hooks/useSwapi";
 import { Loader } from "../Loader";
 import { InputField } from "../InputField";
 import { BASE_URL } from "../../constants/constants";
-import { CharacterCard } from "./CharacterCard";
-import "./styles.css";
+import { CharacterCard } from "../CharacterCard";
+import { useSelector, useDispatch } from "react-redux";
+import { selectedFilteredCharacters } from "../../store/selectors";
+import { saveCharacters } from "../../store/starwarsSlice";
+import type { StarWars } from "../../store/starwarsSlice";
+import { getIdFromUrl } from "../../utils/utils";
 
 type Character = {
   name: string;
@@ -21,7 +24,7 @@ type Character = {
   homeworld: string;
 };
 
-export const CharacterList: React.FC = () => {
+const CharacterList: React.FC = () => {
   const limit = 10;
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [urlPeople, setUrlPeople] = useState<string>(
@@ -29,23 +32,23 @@ export const CharacterList: React.FC = () => {
       searchTerm && `name=${searchTerm}`
     }&limit=${limit}`
   );
-
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const filteredData = useSelector((state: StarWars) =>
+    selectedFilteredCharacters(state, searchTerm)
+  );
 
   // State to manage the current page for pagination
   const { data = [], error, isLoading } = useSwapi(urlPeople);
 
-  const filteredData = data?.results?.filter((char: Character) =>
-    char?.name?.toLowerCase().includes(searchTerm?.toLowerCase())
-  );
+  // const filteredData = data?.results?.filter((char: Character) =>
+  //   char?.name?.toLowerCase().includes(searchTerm?.toLowerCase())
+  // );
 
-  // Helper function to extract the ID from the URL
-  // This assumes the URL is in the format "https://swapi.tech/api/people/{id}"
-  const getIdFromUrl = (url: string) => {
-    if (!url) return "";
-    // Split the URL by "/" and filter out any empty segments
-    return url.split("/").filter(Boolean).pop();
-  };
+  useEffect(() => {
+    if (data?.results) {
+      dispatch(saveCharacters(data?.results));
+    }
+  }, [data?.results]);
 
   // If data is still loading, show a loader
   if (isLoading && !data?.results) {
@@ -54,7 +57,7 @@ export const CharacterList: React.FC = () => {
 
   // If there's an error, display it
   if (error) {
-    return <p className="p-4">Error fetching characters: {error}</p>;
+    return <p>Error fetching characters: {error}</p>;
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,12 +70,6 @@ export const CharacterList: React.FC = () => {
 
   const previousPage = () => {
     setUrlPeople(data.previous);
-  };
-
-  const handleNavigate = (uid: string) => {
-    if (uid) {
-      navigate(`character/${uid}`);
-    }
   };
 
   return (
@@ -95,26 +92,26 @@ export const CharacterList: React.FC = () => {
         {filteredData?.map((people: Character) => {
           const uid = getIdFromUrl(people?.url) ?? "";
           return (
-            <div onClick={() => handleNavigate(uid)} key={uid}>
-              {/* Render the CharacterCard component for each character */}
-              <CharacterCard
-                key={uid}
-                name={people.name}
-                gender={people.gender}
-                birthYear={people.birth_year}
-                height={people.height}
-                hairColor={people.hair_color}
-                skinColor={people.skin_color}
-                eyeColor={people.eye_color}
-                homeworld={people.homeworld}
-              />
-            </div>
+            <CharacterCard
+              key={uid}
+              name={people.name}
+              gender={people.gender}
+              birthYear={people.birth_year}
+              height={people.height}
+              hairColor={people.hair_color}
+              skinColor={people.skin_color}
+              eyeColor={people.eye_color}
+              homeworld={people.homeworld}
+              uid={uid}
+            />
           );
         })}
       </CharacterCardWrapper>
     </>
   );
 };
+
+export default CharacterList;
 
 const LoaderWrapper = styled(Loader)`
   margin-bottom: 10px;
@@ -128,6 +125,7 @@ const CharacterCardWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 800px;
+  min-height: 600px;
   color: white;
   cursor: pointer;
 `;

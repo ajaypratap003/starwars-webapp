@@ -1,9 +1,17 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { CharacterList } from "./components/CharacterList/CharacterList";
-import {CharacterDetails} from "./pages/CharacterDetails/CharacterDetails";
 import "./App.css";
-import { Nav } from "./components/Nav/Nav";
-import Favourites from './pages/Favourites';
+import { Nav, Loader } from "./components";
+
+const CharacterList = lazy(
+  () => import("./components/CharacterList/CharacterList")
+);
+const CharacterDetails = lazy(
+  () => import("./pages/CharacterDetails/CharacterDetails")
+);
+const Favourites = lazy(
+  () => import("./pages/FavouritesPage")
+);
 
 const App = () => {
   return (
@@ -15,11 +23,13 @@ const App = () => {
           { label: "Favourites", href: "/favourites" },
         ]}
       />
-      <Routes>
-        <Route path="/" element={<CharacterList />} />
-        <Route path="/character/:id" element={<CharacterDetails />} />
-        <Route path="/favourites" element={<Favourites />} />
-      </Routes>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route path="/" element={<CharacterList />} />
+          <Route path="/character/:id" element={<CharacterDetails />} />
+          <Route path="/favourites" element={<Favourites />} />
+        </Routes>
+      </Suspense>
     </Router>
   );
 };

@@ -36,7 +36,7 @@ export const Planet: React.FC<PlanetProps> = ({ apiUrl }) => {
   return (
     <div>
       <p>
-      <b>Planet: </b> 
+      <b>Home Planet: </b> 
       {isLoading ? <Skeleton width="100px" /> : planet?.name || "Unknown"}
       </p>
     </div>

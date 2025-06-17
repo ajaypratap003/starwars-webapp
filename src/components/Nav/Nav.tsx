@@ -22,7 +22,11 @@ const Logo = styled.div`
     letter-spacing: 2px;
 `;
 
-const NavLinks = styled.ul`
+interface NavLinksProps {
+    open: boolean;
+}
+
+const NavLinks = styled.ul<NavLinksProps>`
     list-style: none;
     display: flex;
     gap: 1.5rem;
