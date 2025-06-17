@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { CharacterCard } from "../CharacterCard";
 import { getIdFromUrl } from "../../utils/utils";
+import {Button} from '../Button';
 
 export type FavouritesProps = {
   favourites: any[];
@@ -13,10 +14,12 @@ export const Favourites: React.FC<FavouritesProps> = ({ favourites, deleteAll, d
 
   return (
     <div>
-      <ButtonWrapper disabled={favourites?.length===0} onClick={deleteAll}>Remove All from Favourites</ButtonWrapper>
+      <ButtonWrapper>
+        <Button variant="danger" size='medium' disabled={favourites?.length===0} onClick={deleteAll}>Remove All from Favourites</Button>
+       </ButtonWrapper>
       <HeaderWrapper>Favourites Characters</HeaderWrapper>
       <FavouritesCardWrapper>
-        {favourites?.length===0 && <EmptyMessageWrapper>No favourites found</EmptyMessageWrapper>};
+        {favourites?.length===0 && <EmptyMessageWrapper>No record found</EmptyMessageWrapper>};
         {favourites?.map((fav) => {
           const {
             name,
@@ -57,13 +60,13 @@ const EmptyMessageWrapper= styled.div`
   font-size: 25px;
 `
 
-const ButtonWrapper = styled.button`
+const ButtonWrapper = styled.div`
   float: right;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
-  padding: 8px 12px;
+  padding: 3px 3px;
   cursor: pointer;
   float: right;
 
@@ -85,7 +88,7 @@ const HeaderWrapper = styled.h1`
 const FavouritesCardWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 15px;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;

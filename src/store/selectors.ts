@@ -21,6 +21,13 @@ const filterCharacterByUID = (state: StarWars, uid: string) => {
   });
 };
 
+export const hasFavourite = (state: StarWars, uid: string) => {
+  return state?.favourites?.some((fav) => {
+    const id = getIdFromUrl(fav?.url);
+    return id === uid;
+  });
+};
+
 export const selectedCharacterByUID = createSelector(
   [filterCharacterByUID],
   (filterCharacterByUID) => filterCharacterByUID

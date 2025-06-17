@@ -1,17 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useSwapi } from "../../hooks/useSwapi";
 import { Loader } from "../Loader";
 import { InputField } from "../InputField";
-import { BASE_URL } from "../../constants/constants";
+import { Button } from "../Button";
 import { CharacterCard } from "../CharacterCard";
-import { useSelector, useDispatch } from "react-redux";
-import { selectedFilteredCharacters } from "../../store/selectors";
-import { saveCharacters } from "../../store/starwarsSlice";
-import type { StarWars } from "../../store/starwarsSlice";
 import { getIdFromUrl } from "../../utils/utils";
 
-type Character = {
+export type Character = {
   name: string;
   uid: string;
   url: string;
@@ -24,54 +19,27 @@ type Character = {
   homeworld: string;
 };
 
-const CharacterList: React.FC = () => {
-  const limit = 10;
-  const [searchTerm, setSearchTerm] = useState<string>("");
-  const [urlPeople, setUrlPeople] = useState<string>(
-    `${BASE_URL}/people/?page=1&${
-      searchTerm && `name=${searchTerm}`
-    }&limit=${limit}`
-  );
-  const dispatch = useDispatch();
-  const filteredData = useSelector((state: StarWars) =>
-    selectedFilteredCharacters(state, searchTerm)
-  );
+export type CharacterListProps = {
+  data: any;
+  searchTerm: string;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  nextPeoplePage: (url: string) => void;
+  previousPage: (url: string) => void;
+  isLoading: boolean;
+  nextPageUrl: string;
+  previousPageUrl: string;
+};
 
-  // State to manage the current page for pagination
-  const { data = [], error, isLoading } = useSwapi(urlPeople);
-
-  // const filteredData = data?.results?.filter((char: Character) =>
-  //   char?.name?.toLowerCase().includes(searchTerm?.toLowerCase())
-  // );
-
-  useEffect(() => {
-    if (data?.results) {
-      dispatch(saveCharacters(data?.results));
-    }
-  }, [data?.results]);
-
-  // If data is still loading, show a loader
-  if (isLoading && !data?.results) {
-    return <Loader />;
-  }
-
-  // If there's an error, display it
-  if (error) {
-    return <p>Error fetching characters: {error}</p>;
-  }
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const nextPeoplePage = () => {
-    setUrlPeople(data.next);
-  };
-
-  const previousPage = () => {
-    setUrlPeople(data.previous);
-  };
-
+export const CharacterList: React.FC<CharacterListProps> = ({
+  data,
+  searchTerm,
+  handleSearchChange,
+  nextPeoplePage,
+  previousPage,
+  isLoading,
+  nextPageUrl,
+  previousPageUrl
+}) => {
   return (
     <>
       <InputFieldWrapper
@@ -80,16 +48,26 @@ const CharacterList: React.FC = () => {
         value={searchTerm}
       />
       <PaginationWrapper>
-        <button onClick={previousPage} disabled={data?.previous ? false : true}>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={() => previousPage(previousPageUrl)}
+          disabled={previousPageUrl ? false : true}
+        >
           ⏪ Previous Page
-        </button>
-        <button onClick={nextPeoplePage} disabled={data?.next ? false : true}>
+        </Button>
+        <Button
+          variant="secondary"
+          size="small"
+          onClick={() => nextPeoplePage(nextPageUrl)}
+          disabled={nextPageUrl ? false : true}
+        >
           Next Page⏩
-        </button>
+        </Button>
       </PaginationWrapper>
       {isLoading && <LoaderWrapper size={20} />}
       <CharacterCardWrapper>
-        {filteredData?.map((people: Character) => {
+        {data?.map((people: Character) => {
           const uid = getIdFromUrl(people?.url) ?? "";
           return (
             <CharacterCard

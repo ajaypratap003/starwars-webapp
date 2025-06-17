@@ -5,3 +5,7 @@ export * from './Skeleton';
 export * from './InputField';
 export * from './Planet';
 export * from './Favourites';
+export * from './Button';
+export * from './CharacterList';
+export * from './CharacterCard';
+export * from './CharacterDetails';
