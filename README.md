@@ -12,14 +12,14 @@
 
 # Features
   - View Characters list
-  - Pagination contrl to step through the result
+  - Pagination control to step through the result
   - Search character by name
   - Character Details view
-  - Add character to the favaourites list
-  - View Favourites list
-  - Delete All characters from favarourites list
-  - Delete specific character from favarourites list
-  - Persist favarourites list on page load/refresh by using localstorage 
+  - Add character to the favourites list
+  - View favourites list
+  - Delete All characters from favourites list
+  - Delete specific character from favourites list
+  - Persist favourites list on page load/refresh by using localstorage 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
