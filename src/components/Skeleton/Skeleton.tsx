@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes, css } from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 const shimmer = keyframes`
     0% {
@@ -22,12 +22,6 @@ const SkeletonWrapper = styled.div<{
     height: ${({ height }) => height || "1em"};
     position: relative;
     overflow: hidden;
-
-    ${({ theme }) => css`
-        @media (max-width: 600px) {
-            width: 100%;
-        }
-    `}
 
     &::after {
         content: "";

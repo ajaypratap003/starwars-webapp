@@ -1,4 +1,25 @@
-# React + TypeScript + Vite
+# React + TypeScript + Redux Toolkit + Vite
+
+# Prerequites
+   - Node latest version
+   - VS code
+# Setup project
+   - Clone project : ```git clone git@github.com:ajaypratap003/starwars-webapp.git```
+   - Install packages:  ```npm run install```   
+   - Run project: ```npm run dev```
+   - Open app in browser:  http://localhost:5173/
+
+
+# Features
+  - View Characters list
+  - Pagination contrl to step through the result
+  - Search character by name
+  - Character Details view
+  - Add character to the favaourites list
+  - View Favourites list
+  - Delete All characters from favarourites list
+  - Delete specific character from favarourites list
+  - Persist favarourites list on page load/refresh by using localstorage 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
