@@ -1,4 +1,3 @@
-export * from './Table';
 export * from './Nav';
 export * from './Loader';
 export * from './Skeleton';

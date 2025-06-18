@@ -42,7 +42,7 @@ export const CharacterCard: React.FC<CharacterCardProps> = ({
 
   return (
     <StyledCharacterCard onClick={() => enabledClick && handleNavigate(uid)}>
-      {enabledAction && <ButtonWrapper onClick={(e) => { e.stopPropagation(); deleteAction && deleteAction(uid); }} />}
+      {enabledAction && <ButtonWrapper datatest-id={`delete-button-${uid}`} onClick={(e) => { e.stopPropagation(); deleteAction && deleteAction(uid); }} />}
       <h2>{name}</h2>
       <p>Gender: {gender}</p>
       <Planet apiUrl={homeworld} />
