@@ -1,0 +1,1 @@
+import{a as i,u,j as e,L as l,F as c,g as d,h as n}from"./index-CfiJkC8j.js";import{a as v}from"./selectors-Bd1rX2Lu.js";const x=()=>{const s=i(v),t=u();if(!s)return e.jsx(l,{});const a=()=>{t(n())},o=r=>{t(d(r))};return e.jsx("div",{children:e.jsx(c,{favourites:s,deleteAll:a,deleteFavourite:o})})};export{x as default};
