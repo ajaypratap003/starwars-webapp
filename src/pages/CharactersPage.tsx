@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useDeferredValue } from "react";
 import { useSwapi } from "../hooks/useSwapi";
 import { Loader, CharacterList } from "../components";
 import { BASE_URL } from "../constants/constants";
@@ -9,16 +9,18 @@ import type { StarWars } from "../store/starwarsSlice";
 
 const CharactersPage: React.FC = () => {
   const limit = 10;
+  const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const deferredSearchTerm = useDeferredValue(searchTerm);
+
   const [urlPeople, setUrlPeople] = useState<string>(
     `${BASE_URL}/people/?page=1&${
-      searchTerm && `name=${searchTerm}`
+      deferredSearchTerm && `name=${deferredSearchTerm}`
     }&limit=${limit}`
   );
 
-  const dispatch = useDispatch();
   const filteredData = useSelector((state: StarWars) =>
-    selectedFilteredCharacters(state, searchTerm)
+    selectedFilteredCharacters(state, deferredSearchTerm)
   );
 
   // State to manage the current page for pagination
