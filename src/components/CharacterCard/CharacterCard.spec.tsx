@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import { MemoryRouter } from "react-router-dom";
 import { CharacterCard } from "./CharacterCard";
@@ -42,18 +42,4 @@ describe("CharacterCard", () => {
         expect(screen.getByText(/Eye Color:/)).toHaveTextContent("Eye Color: blue");
         expect(screen.getByTestId("planet")).toHaveTextContent(defaultProps.homeworld);
     });
-
-    //  it("renders delete button when enabledAction is true", () => {
-    //     renderComponent({ enabledAction: true });
-    //     expect(screen.getByTestId('delete-button-1')).toBeInTheDocument();
-    // });
-
-    // it("calls deleteAction when delete button is clicked", () => {
-    //     const deleteAction = vi.fn();
-    //     renderComponent({ enabledAction: true, deleteAction });
-    //     const button = screen.getByTestId('delete-button-1');
-    //     fireEvent.click(button);
-    //     expect(deleteAction).toHaveBeenCalledWith("1");
-    // });
-
 });
