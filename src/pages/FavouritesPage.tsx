@@ -1,4 +1,3 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedFavourites } from "../store/selectors";
 import { deleteAllFavourites, deleteFavouriteByUID } from "../store/starwarsSlice";
