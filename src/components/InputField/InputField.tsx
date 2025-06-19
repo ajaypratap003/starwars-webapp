@@ -1,4 +1,3 @@
-import React from 'react';
 import type { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
 

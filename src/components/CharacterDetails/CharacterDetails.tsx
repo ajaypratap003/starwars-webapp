@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Films } from "./Films";
 import { Starships } from "./Starships";

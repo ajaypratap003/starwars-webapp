@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Loader } from "../Loader/Loader";
 import { useSwapiAll } from "../../hooks/useSwapi";

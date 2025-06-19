@@ -1,6 +1,5 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
 
+import styled, { css } from 'styled-components';
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: 'primary' | 'secondary' | 'danger';
     size?: 'small' | 'medium' | 'large';

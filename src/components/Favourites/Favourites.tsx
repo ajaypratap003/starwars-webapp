@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { CharacterCard } from "../CharacterCard";
 import { getIdFromUrl } from "../../utils/utils";
